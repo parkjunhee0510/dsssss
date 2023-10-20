@@ -30,7 +30,7 @@ class User(AbstractBaseUser , PermissionsMixin):
     REQUIRED_FIELDS = ["name"]
 
     def __str__(self):
-        return f"{self.name}님의 계정 = {self.kakaoid}"
+        return f"{self.name}님의 계정은 {self.kakaoid}"
 
     def has_module_perms(self, app_label):  # 특정 어플리케이션에 대한 권한 확인
         return True
