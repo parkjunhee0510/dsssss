@@ -9,7 +9,8 @@ from .models import User
 from rest_framework.permissions import AllowAny 
 from rest_framework.authentication import TokenAuthentication 
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST 
+from rest_framework.status import HTTP_400_BAD_REQUEST 
+from rest_framework import status
 
 User = get_user_model()
 
@@ -20,16 +21,16 @@ class UserListView(APIView):
     def get(self, request):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
     def post(self,request):
         serializer=UserSerializer(data=request.data)
         
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=HTTP_201_CREATED,safe=False)
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
         
-        return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 class UserDetailsView(APIView):
     permission_classes=[AllowAny]
